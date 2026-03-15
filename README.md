@@ -3,22 +3,22 @@
 
 SOCIOGEN is a multi-agent simulation in which agents starting from an empty neural network develop structurally heterogeneous cognitive architectures through social interaction alone. Every neuron is traceable to the social event that created it : the network is a biography.
 
-SOCIOGEN est une simulation multi-agents dans laquelle chaque agent démarre avec un réseau neuronal **vide** et **zéro connaissance**. Par le seul jeu d'interactions sociales, des architectures cognitives hétérogènes émergent — et chaque différence est entièrement explicable.
+SOCIOGEN est une simulation multi-agents dans laquelle chaque agent démarre avec un réseau neuronal **vide** et **zéro connaissance**. Par le seul jeu d'interactions sociales, des architectures cognitives hétérogènes émergent et chaque différence est entièrement explicable.
 
 ---
 
 ## Points forts
 
-- **Naissance d'une intelligence à partir de rien** — les agents construisent leur réseau neurone par neurone, strictement à la demande.
-- **Divergence cognitive émergente** — deux agents issus de la même famille ne suivent jamais le même chemin développemental.
-- **Concepts sociaux spontanés** — des associations comme *crêpes+cinéma* émergent sans avoir été programmées, validées collectivement par les interactions répétées.
-- **IA entièrement explicable** — chaque neurone porte l'étiquette de l'interaction sociale qui l'a créé. Le réseau est une biographie.
+- **Naissance d'une intelligence à partir de rien** : les agents construisent leur réseau neurone par neurone, strictement à la demande.
+- **Divergence cognitive émergente** : deux agents issus de la même famille ne suivent jamais le même chemin développemental.
+- **Concepts sociaux spontanés** : des associations comme *crêpes+cinéma* émergent sans avoir été programmées, validées collectivement par les interactions répétées.
+- **IA entièrement explicable** : chaque neurone porte l'étiquette de l'interaction sociale qui l'a créé. Le réseau est une biographie.
 
 ---
 
 ## Principe du modèle
 
-Les agents sont regroupés en **familles** : chaque famille encode les mêmes concepts via des signaux distincts — comme des dialectes. Le modèle est le symétrique formel des Talking Heads de Steels : là où Steels fixe les signaux et laisse émerger les mots, SOCIOGEN fixe les mots et fait varier les signaux.
+Les agents sont regroupés en **familles** : chaque famille encode les mêmes concepts via des signaux distincts, comme des dialectes. Le modèle est le symétrique formel des Talking Heads de Steels : là où Steels fixe les signaux et laisse émerger les mots, SOCIOGEN fixe les mots et fait varier les signaux.
 
 ```
 Phase parentale   →  chaque agent apprend les signaux de sa famille
@@ -45,10 +45,13 @@ engine.py               — moteur SOCIOGEN (architecture mono-Tower)
 engine_multitower.py    — variante multi-Tower (1 Tower par concept)
 run.py                  — interface interactive pas-à-pas
 trace.py                — biographie cognitive d'un agent (A0)
-XOR2.py                 — test Tower sur le XOR
-parite.py               — benchmark parité 2→10 bits
-Animaux.py              — apprentissage par vagues
-mux11.py                — multiplexeur 11 bits (2048 exemples)
+
+testTower/
+    XOR2.py             — XOR classique (test de sanité, doit donner 2 neurones)
+    XOR_N.py            — XOR généralisé à N bits  →  python3 XOR_N.py 5
+    Parity_N.py         — parité à N bits           →  python3 Parity_N.py 8
+    Multiplexeur_N.py   — multiplexeur S bits        →  python3 Multiplexeur_N.py 3
+    Animaux.py          — apprentissage par vagues (3 neurones)
 ```
 
 ---
@@ -80,7 +83,7 @@ python3 trace.py multi   # multi-Tower
 
 ```bash
 python3 XOR2.py    # doit donner 2 neurones
-python3 parite.py  # parité n bits
+python3 Parity.py 3 # parité n bits
 ```
 
 ```
