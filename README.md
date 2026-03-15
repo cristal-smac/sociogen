@@ -36,6 +36,8 @@ Arrêt             ->  convergence lexicale ≥ 85 %
 
 Le cœur algorithmique est le **Tower Algorithm de Gallant (1990)** : un algorithme constructif booléen à poids entiers qui ajoute des neurones à la demande et ne les oublie jamais (gel irréversible). C'est cette propriété d'inoubli qui rend le réseau lisible comme une biographie sociale.
 
+!(principe général du fonctionnement Sociogen)[sociogen_img.png]
+
 ---
 
 ## Structure du dépôt
