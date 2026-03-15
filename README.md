@@ -11,7 +11,7 @@ SOCIOGEN est une simulation multi-agents dans laquelle chaque agent démarre ave
 
 - **Naissance d'une intelligence à partir de rien** : les agents construisent leur réseau neurone par neurone, strictement à la demande.
 - **Divergence cognitive émergente** : deux agents issus de la même famille ne suivent jamais le même chemin développemental.
-- **Concepts sociaux spontanés** : des associations comme *pankakes+cinema* émergent sans avoir été programmées, validées collectivement par les interactions répétées.
+- **Concepts sociaux spontanés** : des associations de concepts formant des méta-concepts émergent sans avoir été programmées, validées collectivement par les interactions répétées.
 - **IA entièrement explicable** : chaque neurone porte l'étiquette de l'interaction sociale qui l'a créé. Le réseau est une biographie.
 
 ---
@@ -21,15 +21,15 @@ SOCIOGEN est une simulation multi-agents dans laquelle chaque agent démarre ave
 Les agents sont regroupés en **familles** : chaque famille encode les mêmes concepts via des signaux distincts, comme des dialectes. Le modèle est le symétrique formel des Talking Heads de Steels : là où Steels fixe les signaux et laisse émerger les mots, SOCIOGEN fixe les mots et fait varier les signaux.
 
 ```
-Phase parentale   →  chaque agent apprend les signaux de sa famille
+Phase parentale   ->  chaque agent apprend les signaux de sa famille
                      (1 neurone Tower ajouté par concept)
 
-Phase sociale     →  les agents interagissent par paires au hasard
-   mismatch       →  l'auditeur apprend et son Tower grandit
-   match          →  un compteur d'association est incrémenté
-                     (→ concept social si count ≥ 3 avec 3 partenaires)
+Phase sociale     ->  les agents interagissent par paires au hasard
+   mismatch       ->  l'auditeur apprend et son Tower grandit
+   match          ->  un compteur d'association est incrémenté
+                     (concept social si count ≥ 3 avec 3 partenaires)
 
-Arrêt             →  convergence lexicale ≥ 85 %
+Arrêt             ->  convergence lexicale ≥ 85 %
                      ou stagnation neuronale (60 ticks sans croissance)
                      ou 500 ticks maximum
 ```
@@ -48,9 +48,10 @@ trace.py                — biographie cognitive d'un agent (A0)
 
 testTower/
     XOR2.py             — XOR classique (test de sanité, doit donner 2 neurones)
-    XOR_N.py            — XOR généralisé à N bits  →  python3 XOR_N.py 5
-    Parity_N.py         — parité à N bits           →  python3 Parity_N.py 8
-    Multiplexeur_S.py   — multiplexeur S bits de selecteur       →  python3 Multiplexeur_S.py 3
+    XOR_N.py            — XOR généralisé à N bits  -> python3 XOR_N.py 5
+    Parity_N.py         — parité à N bits           ->  python3 Parity_N.py 8
+    Multiplex_S.py      — multiplexeur S bits de selecteur       ->  python3 Multiplexeur_S.py 3
+    Symmetry_N.py       - Symétrie des entrées à N Bits    ->  python3 Symmetry.py 4
     Animaux.py          — apprentissage par vagues (3 neurones)
 ```
 
@@ -113,8 +114,8 @@ sim = Simulation(
 ```
 
 La constante `SIMILAR` dans `engine.py` contrôle la variante de phase parentale :
-- `SIMILAR = False` — chaque agent apprend indépendamment (variations intra-familiales authentiques)
-- `SIMILAR = True`  — clonage exact : tous les agents d'une même famille démarrent avec le même réseau
+- `SIMILAR = False` : chaque agent apprend indépendamment (variations intra-familiales authentiques)
+- `SIMILAR = True`  : clonage exact : tous les agents d'une même famille démarrent avec le même réseau
 
 ---
 
@@ -123,10 +124,9 @@ La constante `SIMILAR` dans `engine.py` contrôle la variante de phase parentale
 ```bibtex
 @inproceedings{beaufils2025sociogen,
   author      = {Beaufils, Victor and Mathieu, Philippe},
-  title       = {De l'identique au différent : divergence cognitive par
-                 interaction sociale dans un système multi-agents},
+  title       = {De l'identique au différent : divergence cognitive par interaction sociale dans un système multi-agents},
   booktitle   = {à paraître},
-  year        = {2025},
+  year        = {2026},
   institution = {Univ. Lille, CNRS, Centrale Lille, UMR 9189, CRIStAL}
 }
 ```
