@@ -83,7 +83,7 @@ python3 trace.py multi   # multi-Tower
 
 ```bash
 python3 XOR2.py    # doit donner 2 neurones
-python3 Parity.py 3 # parité n bits
+python3 Parity_N.py 3 # parité n bits
 ```
 
 ```
@@ -96,7 +96,7 @@ n= 8 | exemples=  256 | neurones=5
 n=10 | exemples= 1024 | neurones=6
 ```
 
-Le nombre de neurones croît d'une unité tous les deux bits, tandis que l'espace des exemples double à chaque incrément. La cascade augmentée de Gallant est exponentiellement plus compacte que l'espace qu'elle représente.
+Avec Parity_N on constate que nombre de neurones croît d'une unité tous les deux bits, tandis que l'espace des exemples double à chaque incrément. La cascade augmentée de Gallant est exponentiellement plus compacte que l'espace qu'elle représente.
 
 ---
 
