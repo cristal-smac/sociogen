@@ -48,9 +48,9 @@ trace.py                — biographie cognitive d'un agent (A0)
 
 testTower/
     XOR2.py             — XOR classique (test de sanité, doit donner 2 neurones)
-    XOR_N.py            — XOR généralisé à N bits  -> python3 XOR_N.py 5
-    Parity_N.py         — parité à N bits           ->  python3 Parity_N.py 8
-    Multiplex_S.py      — multiplexeur S bits de selecteur       ->  python3 Multiplexeur_S.py 3
+    XOR_N.py            — XOR généralisé à N bits          -> python3 XOR_N.py 5
+    Parity_N.py         — parité à N bits                  ->  python3 Parity_N.py 8
+    Multiplex_S.py      — multiplexeur S bits de selecteur ->  python3 Multiplexeur_S.py 3
     Symmetry_N.py       - Symétrie des entrées à N Bits    ->  python3 Symmetry.py 4
     Animaux.py          — apprentissage par vagues (3 neurones)
 ```
