@@ -50,7 +50,7 @@ testTower/
     XOR2.py             — XOR classique (test de sanité, doit donner 2 neurones)
     XOR_N.py            — XOR généralisé à N bits  →  python3 XOR_N.py 5
     Parity_N.py         — parité à N bits           →  python3 Parity_N.py 8
-    Multiplexeur_N.py   — multiplexeur S bits        →  python3 Multiplexeur_N.py 3
+    Multiplexeur_S.py   — multiplexeur S bits de selecteur       →  python3 Multiplexeur_S.py 3
     Animaux.py          — apprentissage par vagues (3 neurones)
 ```
 
