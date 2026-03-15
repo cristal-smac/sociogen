@@ -11,7 +11,7 @@ SOCIOGEN est une simulation multi-agents dans laquelle chaque agent démarre ave
 
 - **Naissance d'une intelligence à partir de rien** : les agents construisent leur réseau neurone par neurone, strictement à la demande.
 - **Divergence cognitive émergente** : deux agents issus de la même famille ne suivent jamais le même chemin développemental.
-- **Concepts sociaux spontanés** : des associations comme *crêpes+cinéma* émergent sans avoir été programmées, validées collectivement par les interactions répétées.
+- **Concepts sociaux spontanés** : des associations comme *pankakes+cinema* émergent sans avoir été programmées, validées collectivement par les interactions répétées.
 - **IA entièrement explicable** : chaque neurone porte l'étiquette de l'interaction sociale qui l'a créé. Le réseau est une biographie.
 
 ---
