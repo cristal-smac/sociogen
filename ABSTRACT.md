@@ -1,13 +1,13 @@
 # Résumé de l'algorithme
 
-On considère 8 activités (crêpes, football, lecture, cuisine…) et 8 agents répartis en 4 familles (2 agents par famille). Chaque activité est représentée par une séquence de 2 signaux (ex. S004, S011), et chaque famille possède sa propre variante de signaux pour chaque activité — comme des "dialectes" distincts.
+On considère 8 activités (crêpes, football, lecture, cuisine…) et 8 agents répartis en 4 familles (2 agents par famille). Chaque activité est représentée par une séquence de 2 signaux (ex. S004, S011), et chaque famille possède sa propre variante de signaux pour chaque activité, comme des "dialectes" distincts.
 
 ## Initialisation : 
 Chaque agent est créé avec un réseau Tower vide et un lexique vide.
 
 (** C'est la premiere variante possible : 1 tower par agent ou 1 tower par agent et par activité**)
 
-Le réseau Tower est dimensionné dès le départ avec 64 entrées (8 activités × 4 familles × 2 signaux), représentant l'espace de tous les signaux possibles dans la simulation — y compris ceux des autres familles que l'agent ne connaît pas encore. Tous les agents connaissent l'ensemble des mots d'activités (crêpes, football, lecture…), et tous les agents d'une même famille partagent exactement les mêmes signaux pour chaque activité — des signaux entièrement distincts de ceux des autres familles. C'est seulement lors de la phase parentale que la correspondance entre mots et signaux est établie pour chaque agent. Le fait que le vecteur d'entrée couvre l'ensemble des signaux de toutes les familles est ce qui rendra possible l'apprentissage social : lorsqu'un agent reçoit des signaux d'une autre famille, il peut les placer correctement dans son vecteur et les soumettre à son Tower, même s'il ne sait pas encore les interpréter.
+Le réseau Tower est dimensionné dès le départ avec 64 entrées (8 activités × 4 familles × 2 signaux), représentant l'espace de tous les signaux possibles dans la simulation, y compris ceux des autres familles que l'agent ne connaît pas encore. Tous les agents connaissent l'ensemble des mots d'activités (crêpes, football, lecture…), et tous les agents d'une même famille partagent exactement les mêmes signaux pour chaque activité, des signaux entièrement distincts de ceux des autres familles. C'est seulement lors de la phase parentale que la correspondance entre mots et signaux est établie pour chaque agent. Le fait que le vecteur d'entrée couvre l'ensemble des signaux de toutes les familles est ce qui rendra possible l'apprentissage social : lorsqu'un agent reçoit des signaux d'une autre famille, il peut les placer correctement dans son vecteur et les soumettre à son Tower, même s'il ne sait pas encore les interpréter.
 
 ## L'algorithme s'exécute en 2 phases:
 
@@ -58,7 +58,7 @@ Deux versions sont possibles :
   
 - Multi-tower : un tower par activité dans chaque agent
   - inconvénient: pas de lien entre les concepts : l'apprentissage de l'un ne sert pas à l'apprentissage de l'autre.
-  - avantage: Chaque Tower L1 est un expert isolé de son activité. Le lien entre concepts existe, mais il est géré séparément par le Tower L2 qui prend en entrée les sorties des Towers L1 — c'est là que les associations entre activités ("crêpes+cinéma") sont codées. 
+  - avantage: Chaque Tower L1 est un expert isolé de son activité. Le lien entre concepts existe, mais il est géré séparément par le Tower L2 qui prend en entrée les sorties des Towers L1, c'est là que les associations entre activités ("crêpes+cinéma") sont codées. 
 
 
 
