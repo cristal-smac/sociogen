@@ -49,7 +49,8 @@ Le cœur algorithmique est le **Tower Algorithm de Gallant (1990)** : un algorit
 engine.py               — moteur SOCIOGEN (architecture mono-Tower)
 engine_multitower.py    — variante multi-Tower (1 Tower par concept)
 run.py                  — interface interactive pas-à-pas
-trace.py                — biographie cognitive d'un agent (A0)
+trace_A0.py             — biographie cognitive d'un agent (A0)
+trace_lexique.py        — biographie cognitive des agents (lexiques)
 
 testTower/
     XOR2.py             — XOR classique (test de sanité, doit donner 2 neurones)

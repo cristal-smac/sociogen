@@ -385,7 +385,7 @@ class Agent:
 
     Possède :
       - un réseau Tower (architecture constructive booléenne)
-      - un lexique personnel : signal → word
+      - un lexique personnel : signal -> word
       - un graphe d'associations entre concepts
       - un journal de conversations
     """
