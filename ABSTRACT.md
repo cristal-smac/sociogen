@@ -12,7 +12,7 @@ Le réseau Tower est dimensionné dès le départ avec 64 entrées (8 activités
 ## L'algorithme s'exécute en 2 phases:
 
 ### Phase parentale: 
-avant toute interaction sociale, chaque agent établit la correspondance entre ses signaux familiaux et les mots d'activités (le lexique). Pour chaque activité, l'agent associe la variante de signaux de sa famille au mot correspondant, et grave cette association dans son réseau Tower sous forme d'un ou plusieurs neurones booléens à seuil, chacun entraîné par l'algorithme Pocket sur l'ensemble des exemples mémorisés jusqu'alors. À l'issue de cette phase, tous les agents d'une même famille partagent exactement les mêmes correspondances mot<-->signaux, bien que leurs réseaux Tower puissent légèrement différer en raison de la part d'aléatoire de l'entraînement Pocket.
+avant toute interaction sociale, chaque agent établit la correspondance entre ses signaux familiaux et les mots d'activités (le lexique). Pour chaque activité, l'agent associe la variante de signaux de sa famille au mot correspondant, et grave cette association dans son réseau Tower sous forme d'un ou plusieurs neurones booléens à seuil, chacun entraîné par l'algorithme Pocket sur l'ensemble des exemples mémorisés jusqu'alors. À l'issue de cette phase, A0 et A4 (tous deux en F0) ont exactement le même lexique : S002->crêpes, S008->cinéma, etc. Mais A1 (F1) dit "crêpes" avec S001, pas S002. Cette phase est la condition nécessaire de toute la suite : sans elle, tous les agents auraient les mêmes signaux pour les mêmes mots, personne ne se tromperait jamais, personne n'apprendrait jamais rien, et les Tower resteraient vides. C'est l'inégalité de départ, contrôlée et structurée par l'appartenance familiale, qui rend la divergence cognitive possible.
 
 (** C'est la seconde variante possible : clonage ou différenciations dans une meme famille**)
 
@@ -20,11 +20,11 @@ avant toute interaction sociale, chaque agent établit la correspondance entre s
 ## Phase sociale: 
 À chaque tick, deux agents sont tirés aléatoirement : un locuteur et un auditeur. Le locuteur choisit un mot dans son lexique et émet la séquence de signaux correspondante. L'auditeur soumet ces signaux à son Tower : deux cas se présentent.
 - Mismatch : le Tower de l'auditeur ne reconnaît pas les signaux (il répond 0, ou retourne un label incorrect). L'auditeur apprend alors la nouvelle correspondance signal<->mot et son Tower ajoute un neurone via l'algorithme Pocket, calibré pour reconnaître exactement ces signaux. Ce neurone porte en mémoire l'identité du locuteur source, traçant ainsi dans l'architecture même du réseau l'origine sociale de cet apprentissage. Un agent accumule ainsi, au fil du temps, plusieurs correspondances pour un même mot : la sienne, héritée de sa famille, et celles apprises au contact d'agents d'autres familles. si A0 a émis le signal S002 pour "crêpes" en direction de A1, et qu'il y a eu mismatch, alors A1 a appris S002 -> crêpes. Cette entrée est dans son lexique et son Tower est entraîné dessus.
-- Match : le Tower de l'auditeur reconnaît correctement le mot. Aucun neurone n'est créé. En revanche, les deux agents mettent à jour leur graphe d'associations personnel : un dictionnaire de paires de mots (mot1, mot2), dont chaque entrée est un objet ConceptEdge portant un compteur de co-occurrences (count) et un ensemble de partenaires distincts (partners). Concrètement, le mot reconnu est associé à un autre mot que les deux agents ont en commun, le count de la paire est incrémenté, et l'identité du partenaire est ajoutée à partners. Ce graphe est entièrement indépendant du Tower : il évolue exclusivement lors des matchs, là où le Tower évolue exclusivement lors des mismatches.
+- Match : le Tower de l'auditeur reconnaît correctement le mot. Aucun neurone n'est créé. En revanche, les deux agents mettent à jour leur graphe d'associations personnel : un dictionnaire de paires de mots (mot1, mot2), dont chaque entrée est un objet ConceptEdge portant un compteur de co-occurrences (count) et un ensemble de partenaires distincts (partners). Concrètement, le mot reconnu est associé à un autre mot que les deux agents ont en commun, le count de la paire est incrémenté, et l'identité du partenaire est ajoutée à partners. Ce graphe est entièrement indépendant du Tower : il évolue exclusivement lors des matchs, là où le Tower évolue exclusivement lors des mismatches. A0 émet S002 ("crêpes"), A1 reconnaît "crêpes" -> match. Les deux agents incrémentent le ConceptEdge (crêpes, cinéma) si cinéma est dans leur vocabulaire commun.
 
 Lorsqu'une ConceptEdge franchit le seuil count >= 3 et partners >= 3, l'association cesse d'être anecdotique et acquiert le statut de concept social : une connaissance de plus haut niveau, comme "crêpes+cinéma", émergée spontanément de l'histoire collective des interactions sans avoir été programmée. C'est seulement à ce moment que le Tower est sollicité : un neurone dédié est ajouté pour graver ce concept dans l'architecture de l'agent, rejoignant ainsi la biographie cognitive aux côtés des neurones parentaux et sociaux. Le double seuil garantit qu'un concept social n'est pas le produit d'une relation dyadique particulière, mais d'une validation collective impliquant plusieurs partenaires distincts.
 
-Toutes les 10 interactions, les ConceptEdge trop faibles (count < 2 et non encore sociales) sont élagées du graphe, évitant l'accumulation d'associations fortuites sans lendemain.
+Toutes les 10 interactions, les ConceptEdge trop faibles (count < 2 et non encore sociales) sont élagués du graphe, évitant l'accumulation d'associations fortuites sans lendemain.
 
 
 ## Arrêt: 
@@ -36,21 +36,10 @@ La simulation s'arrête soit par convergence lexicale inter-familles (>= 85 % de
 
 Cette compréhension est cependant partielle et asymétrique en cours de simulation : si A3 et A7 ne se sont jamais rencontrés, A7 ignore encore les signaux de F3. Plus un agent a interagi avec des partenaires de familles diverses, plus son lexique est riche et son Tower étendu. C'est pourquoi deux agents d'une même famille peuvent, après la phase sociale, avoir des Tower de tailles différentes : A0 a peut-être rencontré des agents de F1, F2 et F3, tandis que A4, issu de la même famille, avec le même lexique initial, n'a croisé que des agents de F1.
 
-Si l'on garantit en revanche que tous les agents ont interagi avec tous les autres, la compréhension mutuelle devient complète et universelle : chaque agent reconnaît alors l'intégralité des signaux de toutes les familles, S000 et S001 pour "crêpes" selon F1, S002 et S008 selon F0, S017 et S047 selon F2, S001 et S014 selon F3, et sait sans ambiguïté de quel concept il s'agit, quelle que soit la façon de le dire. Pourtant leurs réseaux restent structurellement différents : l'ordre dans lequel A0 a appris ces signaux, et les neurones que cet apprentissage a créés, ne sont pas les mêmes que ceux de A4. La compréhension converge, la biographie diverge, et c'est précisément le résultat central du modèle.
+Si l'on garantit en revanche que tous les agents ont interagi avec tous les autres, la compréhension mutuelle devient complète et universelle : chaque agent reconnaît alors l'intégralité des signaux de toutes les familles, S023 S025 pour "crêpes" selon F0, S007 S022 selon F1, S033 S045 selon F2, S019 S059 selon F3, et sait sans ambiguïté de quel concept il s'agit, quelle que soit la façon de le dire. Pourtant leurs réseaux restent structurellement différents : l'ordre dans lequel A0 a appris ces signaux, et les neurones que cet apprentissage a créés, ne sont pas les mêmes que ceux de A4. La compréhension converge, la biographie diverge, et c'est précisément le résultat central du modèle.
 
 Chacun a ainsi donné naissance à sa propre "intelligence" (matérialisée par son Tower), enrichie non seulement de correspondances signal↔mot apprises auprès d'autres agents, mais aussi de concepts de plus haut niveau (comme "crêpes+cinéma") émergés spontanément de l'histoire collective des interactions et partagés par les agents qui les ont co-construits. Grâce à la traçabilité du Tower Algorithm, chaque neurone portant l'étiquette du concept appris et l'origine de sa création, on peut reconstituer la "biographie cognitive" de chaque agent, distinguer la part du savoir hérité de la famille de celle acquise socialement, et mesurer l'influence culturelle de chaque famille sur l'ensemble de la population.
 
-
-# Ce qui est remarquable
-C'est remarquable pour trois raisons qui se renforcent mutuellement.
-- La divergence émerge sans être programmée
-Personne n'a dit aux agents "soyez différents". Ils partent tous avec le même réseau vide, les mêmes mots, les mêmes règles d'interaction. La seule source de diversité est l'ordre aléatoire des rencontres, qui parle à qui, dans quel ordre, sur quel mot. Et pourtant les réseaux finaux sont tous structurellement distincts. La divergence cognitive est un attracteur du système, pas un paramètre.
-- La divergence et la convergence coexistent, et c'est paradoxal !
-Dans tous les modèles classiques de type Talking Heads, convergence du langage et convergence cognitive vont de pair : quand les agents se comprennent, ils pensent pareil. SOCIOGEN montre que ce couplage n'est pas une nécessité, on peut avoir une compréhension mutuelle complète (tous les signaux reconnus par tous) tout en ayant des architectures cognitives irréconciliables. Se comprendre ne veut pas dire penser pareil. C'est un résultat nouveau.
-- Chaque différence est explicable.
-Dans un réseau profond entraîné par rétropropagation, on peut observer que A0 et A4 se comportent différemment, mais on ne peut pas expliquer pourquoi. Dans SOCIOGEN, chaque différence entre les Tower de A0 et A4 est traçable à un événement social précis : A0 a rencontré A3 au step 47 sur le mot "football", d'où ce neurone-là, avec ce poids-là. La divergence n'est pas seulement mesurable, elle est lisible. Le réseau est une biographie.
-
-Ces trois points ensemble répondent à une question que personne n'avait posée dans ces termes : comment des esprits différents peuvent-ils émerger d'agents identiques, par la seule force des interactions sociales, de façon entièrement explicable ? C'est ce que SOCIOGEN démontre.
 
 
 
@@ -61,7 +50,22 @@ Ces trois points ensemble répondent à une question que personne n'avait posée
 - IA explicable : grâce à la traçabilité du Tower Algorithm, chaque neurone porte l'étiquette de son origine, permettant de reconstituer intégralement la biographie cognitive de chaque agent.
 
 
-# F.A.Q :
+
+# Ce qui est remarquable
+C'est remarquable pour trois raisons qui se renforcent mutuellement.
+- La divergence émerge sans être programmée
+Personne n'a dit aux agents "soyez différents". Ils partent tous avec le même réseau vide, les mêmes mots, les mêmes règles d'interaction. La seule source de diversité est l'ordre aléatoire des rencontres, qui parle à qui, dans quel ordre, sur quel mot. Et pourtant les réseaux finaux sont tous structurellement distincts. La divergence cognitive est un attracteur du système, pas un paramètre.
+A0 et A4 partent avec le même Tower après la phase familiale. Après 100 interactions, A0 a 12 neurones, A4 en a 9, simplement parce qu'ils n'ont pas rencontré les mêmes agents dans le même ordre.
+- La divergence et la convergence coexistent, et c'est paradoxal !
+Dans tous les modèles classiques de type Talking Heads, convergence du langage et convergence cognitive vont de pair : quand les agents se comprennent, ils pensent pareil. SOCIOGEN montre que ce couplage n'est pas une nécessité, on peut avoir une compréhension mutuelle complète (tous les signaux reconnus par tous) tout en ayant des architectures cognitives irréconciliables. Se comprendre ne veut pas dire penser pareil. C'est un résultat nouveau.
+- Chaque différence est explicable.
+Dans un réseau profond entraîné par rétropropagation, on peut observer que A0 et A4 se comportent différemment, mais on ne peut pas expliquer pourquoi. Dans SOCIOGEN, chaque différence entre les Tower de A0 et A4 est traçable à un événement social précis : A0 a rencontré A3 au step 47 sur le mot "football", d'où ce neurone-là, avec ce poids-là. La divergence n'est pas seulement mesurable, elle est lisible. Le réseau est une biographie. A0 a un neurone #9 portant "appris de A3, step 47, football" — A4 n'a pas ce neurone. Cette différence est entièrement traçable.
+
+Ces trois points ensemble répondent à une question que personne n'avait posée dans ces termes : comment des esprits différents peuvent-ils émerger d'agents identiques, par la seule force des interactions sociales, de façon entièrement explicable ? C'est ce que SOCIOGEN démontre.
+
+
+
+# Frequently Asked Questions (F.A.Q) :
 
 - Quelle est la taille des Tower ? est-ce que c'est la même pour tous ? <p/>
 Tous les Tower ont exactement la même taille d'entrée : k×m×s bits, soit dans la configuration de référence 8×4×2=64 entrées binaires. C'est fixé une fois pour toutes à la création et ça ne change jamais. Chaque bit correspond à un signal possible dans toute la population, y compris les signaux des autres familles que l'agent ne connaît pas encore.
@@ -80,10 +84,10 @@ Parce que c'est ce qui se passe dans la réalité, personne ne parle avec tout l
 - Si A0 apprend "crêpes" via S001 de A1, puis via S017 de A2, un neurone pour chacun, ou un seul ? <p/>
 Un neurone pour chacun. Chaque mismatch crée au moins un neurone, calibré sur le signal reçu ce jour-là. Le Tower de A0 contient donc deux neurones distincts, chacun portant le nom de son créateur : "appris de A1" et "appris de A2".
 - Est-ce qu'un agent peut désapprendre ? Que se passe-t-il si deux agents lui enseignent des choses contradictoires sur le même signal ? <p/>
-Non, l'inoubli est absolu. Et les contradictions sont gérées par le Pocket algorithm : si S005 a été associé à "crêpes" par A1 puis à "football" par A3, le Tower crée un neurone supplémentaire pour réconcilier les deux. Il n'oublie rien, il s'adapte.
+Non, l'inoubli est absolu. Et les contradictions sont gérées par le Pocket algorithm : si S005 a été associé à "crêpes" par A1 puis à "football" par A3, le Tower crée un neurone supplémentaire. le Pocket algorithm fait de son mieux pour satisfaire les deux exemples contradictoires, quitte à laisser une erreur résiduelle. Néanmoins, il n'oublie rien, il s'adapte.
 - Si on retire A0 à mi-parcours, est-ce que son influence survit ? <p/>
 Oui, pour toujours. Chaque neurone créé grâce à A0 porte la mention "appris de A0" et reste gravé dans le Tower de ses interlocuteurs. A0 peut disparaître, sa trace cognitive est permanente.
-Un agent très sociable comprend-il mieux, ou se fait-il mieux comprendre ?
+- Un agent très sociable comprend-il mieux, ou se fait-il mieux comprendre ? <p/>
 Il comprend mieux, son Tower est plus riche, son lexique plus large. Mais il ne se fait pas nécessairement mieux comprendre : ses propres signaux restent familiaux, identiques à ceux d'un agent peu sociable de la même famille.
 - Deux agents qui ne se sont jamais rencontrés peuvent-ils se comprendre via un intermédiaire commun ? <p/>
 Oui, si A0 et A7 ont tous les deux appris de A3, ils partagent les signaux de F3 sans s'être jamais parlé. La compréhension se propage par transitivité, exactement comme dans un réseau social humain.
