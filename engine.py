@@ -681,6 +681,68 @@ class Simulation:
         a2.conversation_log.append(log)
         return log
 
+    
+    def step_forced(self, speaker_id: str, listener_id: str,
+                    word: str) -> dict:
+        """
+        Un tick de simulation avec locuteur, auditeur et mot imposes.
+        Meme logique que step() mais sans tirage aleatoire.  Utile
+        pour un protocole de rencontre exhaustif où on s'assure que
+        tout le monde a discuté avec tout le
+        monde. (convergence_complete_monotower.py"
+        """
+        self.time += 1
+        a1 = next(a for a in self.agents if a.id == speaker_id)
+        a2 = next(a for a in self.agents if a.id == listener_id)
+
+        # Chercher le signal du mot dans le lexique du locuteur
+        signal_key = next(
+            (k for k, v in a1.lexicon.items() if v == word), None
+        )
+        if signal_key is None:
+            return None   # le locuteur ne connait pas ce mot
+
+        signal_seq = list(signal_key)
+        a2_word    = a2.get_word_for_signal(signal_seq)
+
+        a1.interaction_count += 1
+        a2.interaction_count += 1
+
+        log = {
+            "time"               : self.time,
+            "speaker"            : a1.id,
+            "listener"           : a2.id,
+            "signal"             : signal_seq,
+            "speaker_word"       : word,
+            "response"           : a2_word,
+            "match"              : a2_word == word,
+            "network_growth"     : False,
+            "new_concept_learned": None,
+        }
+
+        if a2_word == word:
+            a1.successful_matches += 1
+            a2.successful_matches += 1
+            common = a1.known_words & a2.known_words - {word}
+            if common:
+                other = random.choice(list(common))
+                a1.form_association(word, other, a2.id)
+                a2.form_association(word, other, a1.id)
+                log["association_formed"] = (word, other)
+        else:
+            grew                       = a2.receive_new_concept(
+                                             signal_seq, word, a1.id)
+            log["network_growth"]      = grew
+            log["new_concept_learned"] = word
+
+        if self.time % 10 == 0:
+            for a in self.agents:
+                a.prune_associations()
+
+        a1.conversation_log.append(log)
+        a2.conversation_log.append(log)
+        return log
+
     def run(self, n_steps: int) -> list:
         """Lance n_steps ticks et retourne la liste des logs."""
         return [self.step() for _ in range(n_steps)]
