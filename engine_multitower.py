@@ -372,7 +372,7 @@ class ConceptEdge:
     """
     concept1: str
     concept2: str
-    count   : int = 1
+    count   : int = 0
     partners: set = field(default_factory=set)
     neuron_created: bool = False
 
