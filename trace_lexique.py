@@ -64,7 +64,7 @@ def print_lexiques(sim, titre):
 
         for row in range(max_sigs):
             if row == 0:
-                prefix = f"  {agent.id:<8} F{agent.family_id:<4}"
+                prefix = f"  {agent.id:<8} F{agent.family_id:<3}"
             else:
                 prefix = f"  {' ':<13}"
             row_line = prefix

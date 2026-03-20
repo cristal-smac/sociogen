@@ -52,6 +52,9 @@ Si l'on garantit en revanche que tous les agents ont interagi avec tous les autr
 Chacun a ainsi donné naissance à sa propre "intelligence" (matérialisée par son Tower), enrichie non seulement de correspondances signal↔mot apprises auprès d'autres agents, mais aussi de concepts de plus haut niveau (comme "crêpes+cinéma") émergés spontanément de l'histoire collective des interactions et partagés par les agents qui les ont co-construits. Grâce à la traçabilité du Tower Algorithm, chaque neurone portant l'étiquette du concept appris et l'origine de sa création, on peut reconstituer la "biographie cognitive" de chaque agent, distinguer la part du savoir hérité de la famille de celle acquise socialement, et mesurer l'influence culturelle de chaque famille sur l'ensemble de la population.
 
 
+Le résultat "la compréhension converge, la biographie diverge" est frappant. Personne dans la tradition Talking Heads ne l'avait formulé ainsi, parce que personne n'avait séparé la convergence lexicale de la divergence architecturale. C'est notre contribution principale.
+
+La propriété d'inoubli et la traçabilité neurone par neurone sont des outils d'analyse que les approches deep learning ne peuvent pas offrir. Dans le contexte actuel où l'explicabilité de l'IA est un enjeu majeur, c'est un argument fort.
 
 
 # Résumé: Il y a donc 4 points forts dans ce modèle
