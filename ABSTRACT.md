@@ -11,7 +11,9 @@ Le réseau Tower est dimensionné dès le départ avec 64 entrées (8 activités
 
 Le fait que le vecteur d'entrée couvre l'ensemble des signaux de toutes les familles est ce qui rendra possible l'apprentissage social : lorsqu'un agent reçoit des signaux d'une autre famille, il peut les placer correctement dans son vecteur et les soumettre à son Tower, même s'il ne sait pas encore les interpréter. On notera que c'est le lexique de l'agent qui dit "l'agent A2 sait que les signaux [S004, S011] correspondent au mot crêpes". Le Tower n'est que le mécanisme qui permet de retrouver ce mot quand on lui présente ces signaux.
 
-Ces trois notions jouent des rôles complémentaires et distincts. **Le Tower** est le mécanisme de reconnaissance pure : il prend un vecteur de 64 bits et répond 0 ou 1, sans rien savoir des concepts. **Le label** de chaque neurone est l'étiquette collée lors de sa création ("crêpes", "football") qui établit le seul lien entre la sortie binaire du Tower et le concept qu'elle représente : le concept n'est pas dans les poids, il est dans l'étiquette. **Le lexique** est un dictionnaire direct signal->mot : quand A1 a appris lors d'un mismatch que S002 correspond à "crêpes", cette association est enregistrée telle quelle dans son lexique, indépendamment du Tower. En pratique, le lexique répond en premier (clé exacte, réponse garantie) ; le Tower intervient quand le signal reçu n'est pas encore dans le lexique , il peut alors reconnaître un signal structurellement proche de ceux qu'il a appris, mais sans garantie d'exactitude. C'est cette reconnaissance approximative du Tower qui est à la fois sa force (il peut généraliser) et sa faiblesse (il peut se tromper par faux positif).
+Ces trois notions jouent des rôles complémentaires et distincts. **Le Tower** est le mécanisme de reconnaissance pure : il prend un vecteur de 64 bits et répond 0 ou 1, sans rien savoir des concepts. **Le label** de chaque neurone est l'étiquette collée lors de sa création ("crêpes", "football") qui établit le seul lien entre la sortie binaire du Tower et le concept qu'elle représente : le concept n'est pas dans les poids, il est dans l'étiquette. **Le lexique** est un dictionnaire direct signal->mot : quand A1 a appris lors d'un mismatch que S002 correspond à "crêpes", cette association est enregistrée telle quelle dans son lexique, indépendamment du Tower.
+
+En pratique, le lexique sert au locuteur pour choisir quel signal émettre (clé exacte, réponse garantie) ; le Tower sert à l'auditeur pour reconnaître les signaux reçus — il peut reconnaître un signal structurellement proche de ceux qu'il a appris, mais sans garantie d'exactitude. C'est cette reconnaissance approximative du Tower qui est à la fois sa force (il peut généraliser) et sa faiblesse (il peut se tromper par faux positif).
 
 Plus précisément : quand le Tower répond 1 à un signal, c'est le label du neurone activé qui donne le concept, pas les poids, pas la sortie numérique. Le Tower ne sait pas ce qu'est "crêpes" : il sait juste qu'il doit répondre 1 à ce vecteur de signaux. C'est le label "crêpes" attaché au neurone lors de son création qui établit le lien. Conséquence directe : si deux neurones répondent 1 simultanément à un même signal (ce qui peut arriver dans le mono-Tower) le réseau retourne le label du premier neurone activé, sans garantie que ce soit le bon. Le concept n'est pas dans le réseau, il est dans ses étiquettes.
 
@@ -87,7 +89,7 @@ Elle crée la diversité initiale sans laquelle il ne se passe rien. Sans elle, 
 - À quoi sert le Tower ? Si les agents enregistraient directement les associations signal↔concept dans leur lexique, ça changerait quoi ? <p/>
 Rien pour la communication, les agents se comprendraient exactement pareil. Le Tower sert uniquement à retrouver un mot à partir de signaux inconnus, là où le lexique est un dictionnaire à clé exacte. Mais surtout : sans Tower, il n'y aurait pas de biographie. C'est le Tower qui rend chaque apprentissage traçable, daté et attribuable à un pair. Le lexique dit quoi, le Tower dit comment et d'où.
 - Si on laisse tourner jusqu'à ce que chaque agent ait parlé avec tous les autres, tout le monde se comprendrait ?<p/>
-Oui, complètement. Chacun garderait ses propres signaux pour parler, mais reconnaîtrait tous les signaux de toutes les familles. On peut dire n'importe quoi de n'importe quelle façon, tout le monde suit.
+oui en théorie, mais nos expériences montrent que le mono-Tower n'y parvient pas complètement à cause des faux positifs silencieux. Chacun garderait ses propres signaux pour parler, mais reconnaîtrait tous les signaux de toutes les familles. On peut dire n'importe quoi de n'importe quelle façon, tout le monde suit.
 - Pourquoi arrêter avant ? Quel est l'intérêt ?<p/>
 Parce que c'est ce qui se passe dans la réalité, personne ne parle avec tout le monde. Et c'est précisément dans cet état inachevé que la divergence est la plus intéressante : deux agents de la même famille ont eu des parcours différents, donc des Tower différents, donc des biographies différentes. Si on attend la convergence complète, tout le monde a le même lexique et les biographies se ressemblent de plus en plus. L'inachèvement est la condition de la diversité.
 - Si A0 apprend "crêpes" via S001 de A1, puis via S017 de A2, un neurone pour chacun, ou un seul ? <p/>
@@ -109,9 +111,6 @@ Non, et c'est une distinction importante. Le lexique ne contient que des associa
 
 # Remarques
 
-Chaque agent possède un tower avec 64 entrées binaires et 1 sortie.
-Quand on lui présente un vecteur avec des 1 pour les signaux, il dit si oui ou non il connait ce concept. Mais en aucun cas le concept (crèpes par exemple) n'est codé dans le réseau. Le seul moyen de le savoir c'est de regarder les labels. ET donc, il faut lancer l'apprentissage un exemple à la fois (et non pas en paquets) de manière à ce que le label ne contienne qu'un seul concept.
-
 Deux versions sont possibles :
 - Monotower : un seul Tower par agent
   - Avantage : ça prend moins de place
@@ -122,6 +121,8 @@ Deux versions sont possibles :
 - Multi-tower : un tower par activité dans chaque agent
   - inconvénient: pas de lien entre les concepts : l'apprentissage de l'un ne sert pas à l'apprentissage de l'autre.
   - avantage: Chaque Tower L1 est un expert isolé de son activité. Le lien entre concepts existe, mais il est géré séparément par le Tower L2 qui prend en entrée les sorties des Towers L1, c'est là que les associations entre activités ("crêpes+cinéma") sont codées. 
+
+Les deux architectures ont le même défaut qui se matérialise différemment. Dans les deux architectures, le Tower n'apprend jamais qu'un signal n'est pas un concept donné. Il apprend uniquement des "oui", jamais des "non". Il y a des faux positifs des deux cotés. Là où le mono-Tower a des faux positifs accidentels (il diut qu'il connait par chance, sans l'avoir appris), le multi-Tower lui, il les accumule par construction en apprenant trop (certains réseaux finissent par dire oui à tout ce qui se présente). 
 
 
 
