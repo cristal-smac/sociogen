@@ -36,10 +36,10 @@ Pour éviter que le cerveau des agents ne soit encombré par des milliers d'asso
 
 Ce qui est remarquable !
 
-    Convergence sans uniformité : A0 et A5 se comprennent sur 'pancakes+music' sans avoir les mêmes poids synaptiques. Le langage est le pont entre deux cerveaux différents.
+- Convergence sans uniformité : A0 et A5 se comprennent sur 'pancakes+music' sans avoir les mêmes poids synaptiques. Le langage est le pont entre deux cerveaux différents.
 
-    La stabilité crée la complexité : Ce n'est pas l'erreur qui est créatrice, mais le succès. C'est parce qu'A0 et Bob sont en phase (Match) qu'ils peuvent se permettre d'inventer de nouveaux sens (Lignes 590-597).
+- La stabilité crée la complexité : Ce n'est pas l'erreur qui est créatrice, mais le succès. C'est parce qu'A0 et A7 sont en phase (Match) qu'ils peuvent se permettre d'inventer de nouveaux sens (Lignes 590-597).
 
-    L'intuition dépasse l'acquis : C'est parce que la Tower est capable de gérer des entrées complexes (plusieurs '1') que le langage peut dépasser le dictionnaire figé hérité des parents (Lignes 481-488).
+- L'intuition dépasse l'acquis : C'est parce que la Tower est capable de gérer des entrées complexes (plusieurs '1') que le langage peut dépasser le dictionnaire figé hérité des parents (Lignes 481-488).
 
 En résumé : Succès -> Association -> Validation sociale (3x3) -> Innovation.
